@@ -1,0 +1,46 @@
+# cohlberg_01A.txt, WESmith 03/31/23
+
+# if showing hydrogens is desired, it must be set before loading the object
+#set pdbAddHydrogens;
+
+load =1AL1;
+
+show info;
+show sequence;
+
+cartoon only;
+select helix; color magenta;
+
+# color non-amino-acid atoms
+select hetero; spacefill 100; wireframe 30; color jmol;
+
+# color ribbon based on residue properties
+select hydrophobic; color green;
+select positive; color yellow;
+select negative; color magenta;
+
+# show atoms
+select protein; spacefill 100; wireframe 30;
+
+# backbone atoms colored, override ribbon color, just see residues colored by their properties
+select backbone; color jmol;
+
+# make the cartoon ribbon narrower
+cartoon 100
+
+# turn off cartoon, turn on ribbon (cartoon is a superset of ribbon)
+cartoon off; ribbon on; ribbon 70; color ribbon cyan;
+
+# backbone only: ribbon disappears
+# can comment this out if desired BUT every commented-out command must be on its own line
+#backbone only;
+#backbone 100;
+
+# to see in spacefill (can comment out)
+#select all;
+#spacefill;
+
+# color all hydrogen atoms and reduce their sizes
+#select hydrogen;
+#color white;
+#spacefill 50;

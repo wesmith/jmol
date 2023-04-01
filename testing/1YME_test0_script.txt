@@ -1,0 +1,12 @@
+load =1YME;
+delete water;
+cartoon;
+restrict sheet;
+select sheet;
+color orange;
+select sidechain; color jmol;
+#select backbone;
+#color green;
+select LEU; color magenta;
+select ALA; color green;
+select sidechain; color jmol;

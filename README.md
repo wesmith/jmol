@@ -1,7 +1,7 @@
 # jmol
 
-** Learn/experiment with writing scripts for the Jmol molecular-biology visualizer.
+## Learn/experiment with writing scripts for the Jmol molecular-biology visualizer.
 
-*** Figure: Protein 1PGB with hydrogen bonds from cohlberg_01B.txt exercise presented in 'wall-eyed' stereo.
+### Figure: Protein 1PGB showing hydrogen bonds, presented in 'wall-eyed' stereo (from cohlberg_01B.txt exercise).
 
-![ ](1PGB.jpg)
+![ figure ](1PGB.jpg)

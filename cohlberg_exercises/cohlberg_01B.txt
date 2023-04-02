@@ -1,79 +1,57 @@
 # cohlberg_01B.txt, WESmith 04/01/23
 
-# if showing hydrogens is desired, it must be set before loading the object
+# It is necessary to cut/paste each section of interest into the jmol console
+# to show the progression of the analysis. The commands 'pause', 'resume', 'prompt'
+# don't seem to properly control the flow and show the intermediate analyses. Jmol
+# appears to hijack the CPU with 'pause'. 
+
+# 1) ----- SET UP for 1PGB: show cartoon; cut/paste to 2) -----------------------
+
+# if showing hydrogens is desired, set pdbAddHydrogens before loading the object
+
 #set pdbAddHydrogens;
-
 load =1PGB;
-
+show info; show sequence; show structure;
 delete water;
-
-show info;
-show sequence;
-show structure;
-
 cartoon only;
 color structure;
 
-pause 'cartoon view, hit "resume" to continue'
+# 2) ----- show backbone, hydrogen bonds, as a stick figure -------------------
 
-backbone only;
-backbone 100;
-#color group;
+backbone only; backbone 100;
+hbonds calculate; hbonds 40; color hbonds orange; set hbonds backbone;
 
-# stick figure of hbonds
-hbonds calculate;
-hbonds 40;
-color hbonds orange;
-set hbonds backbone;
+# 3) ----- make a more detailed picture of the H bonds with atoms ------------
 
-pause 'this is a stick figure of the H bonds, type "resume" to see a more detailed picture"
-
-# more detailed atomic structure of hbonds
-select all;
-wireframe 50;
-spacefill 100;
+select all; wireframe 50; spacefill 100;
 color amino;
 set hbonds sidechain;
-#color hbonds cpk;
-#color hbonds orange;
 
-pause 'H bonds visible, residues color-coded, type "resume" to isolate the beta sheet'
+# 4) ----- isolate the beta sheet with its H bonds ------------------
 
-# isolate the sheet
-select sheet;
-color cpk;
+select all; wireframe 50; spacefill 100; color cpk;
 restrict sheet;
-cartoon 200;
-#color yellow;
-
+cartoon 250; select sheet; color cartoon cyan;
+hbonds calculate; hbonds 40; color hbonds orange; set hbonds sidechain;
 # turn off hbonds in helix
-select not sheet;
-hbonds off;
+select not sheet; hbonds off;
 
-pause 'type "resume" to isolate the alpha helix'
+# 5) ----- isolate the alpha helix with its H bonds ------------------
 
-#isolate the helix
-select all;
-wireframe 50;
-spacefill 100;
-color cpk;
+select all; wireframe 50; spacefill 100; color cpk;
 restrict helix;
-cartoon 200;
-select helix;
-hbonds 40;
-select not helix;
-hbonds off;
+cartoon 200; select helix; color cartoon cyan;
+hbonds calculate; hbonds 40; color hbonds orange; set hbonds sidechain;
+select not helix; hbonds off;
 
-pause 'type "resume" to see all of the H bonds in isolation"
+# 6) ---- see all of the H bonds in isolation ---------------
 
 select all;
-hbonds 40;
-color hbonds orange;
-wireframe off;
-spacefill off;
-cartoon off;
+hbonds calculate; hbonds 40; color hbonds orange; set hbonds backbone;
+wireframe off; spacefill off; cartoon off;
 
-pause 'type "resume" to see the cartoon with the H bonds"
+# 7) ----- the cartoon with the H bonds -------------
 
-cartoon;
-color structure;
+select all;
+hbonds calculate; hbonds 40; color hbonds orange; set hbonds backbone;
+cartoon; color cartoon structure;

@@ -1,0 +1,49 @@
+# cohlberg_01C.txt, WESmith 04/01/23, these are FE1, FE2, FE3 examples
+
+# It is necessary to cut/paste each section of interest into the jmol console
+# to show the progression of the analysis. The commands 'pause', 'resume', 'prompt'
+# don't seem to properly control the flow and show the intermediate analyses. Jmol
+# appears to hijack the CPU with 'pause'. 
+
+# 1) ----- FE1 SET UP for 1GZI: show cartoon; cut/paste to 2) -----------------------
+
+# if showing hydrogens is desired, set pdbAddHydrogens before loading the object
+
+#set pdbAddHydrogens;
+load =1GZI;
+show info;
+show sequence;
+show structure;
+delete water;
+cartoon only;
+color structure;
+
+# 2) ----- isolate the helices ------------------
+
+restrict helix;
+
+# 3) ----- isolate the sheets -----------------
+
+select all; cartoon; restrict sheet;
+
+# 4) ----- color residues 41-46 red to examine ------------
+
+select all; cartoon; select 41-46; color red
+
+
+# 1) ----- FE2 set up for 2KT2 ---------------
+
+# if showing hydrogens is desired, set pdbAddHydrogens before loading the object
+
+#set pdbAddHydrogens;
+load =2KT2;
+show info;
+show sequence;
+show structure;
+delete water;
+cartoon only;
+color structure;
+
+# 2) ----- isolate the sheets -----------------
+
+select all; cartoon; restrict sheet;

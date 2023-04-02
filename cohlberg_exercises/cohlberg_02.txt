@@ -1,0 +1,138 @@
+# cohlberg_02.txt, WESmith 04/02/23
+
+# It is necessary to cut/paste each section of interest into the jmol console
+# to show the progression of the analysis. The commands 'pause', 'resume', 'prompt'
+# don't seem to properly control the flow and show the intermediate analyses. Jmol
+# appears to hijack the CPU with 'pause'. 
+
+# 1) ----- SET UP for 2LYZ lysozyme: show cartoon; cut/paste to 2) ---------------------
+
+# if showing hydrogens is desired, set pdbAddHydrogens before loading the object
+
+#set pdbAddHydrogens;
+load =2LYZ;
+show info; show sequence; show structure;
+delete water;
+cartoon only;
+color structure;
+
+# 2) ----- look at spacefill to see cleft ------------
+
+select all; color cpk; spacefill
+
+# 3) ----- set to wireframe to see the disulfide bonds between sulfur atoms ---------
+
+select all; wireframe only; wireframe 50;
+ssbonds 100; set ssbonds sidechain;
+
+# 4) ----- see in coarser backbone mode --------------
+
+backbone only; backbone 80;
+ssbonds 100; set ssbonds backbone;
+
+# 5) ----- cartoon mode again ----------------
+
+cartoon only; color structure;
+
+# 6) ---- see spacefill mode with structure colors, identify active cleft -----
+
+spacefill only;
+
+# 7) ----- show hydrophobic in green spacefill, polar in yellow wireframe -----
+
+select all; color cpk; spacefill only;
+select hydrophobic; color green;
+select polar; color yellow;
+wireframe only; wireframe 100;
+
+# 8) ----- reverse the above displey ------
+
+select all; color cpk; spacefill only;
+select polar; color yellow;
+select hydrophobic; color green;
+wireframe only; wireframe 100;
+
+# 9) ----- spacefill all, keep hydrophobic and polar colors, slice to see distribution --
+# NOTE: ctrl-shift-left-mouse with vertical motion changes slab location
+
+select protein; spacefill only;
+slab on; slab 50;
+
+# 10) ----- look at positive (basic), negative (acidic), uncharged polar residues -----
+
+slab off;
+select positive; color red;
+select negative; color blue;
+select polar and not charged; color magenta;
+#NOTE 'polar' is a superset containing 'positive', 'negative', 'not charged'
+
+# 11) ----- look at beta sheet next to cleft, include disulphide bonds -----
+
+select protein; wireframe only; color cpk;
+set ssbonds sidechain; ssbonds 50;
+select sheet; cartoon; wireframe 50;
+
+# 12) ----- look at hbonds for beta sheet -----
+
+restrict sheet;
+hbonds calculate; hbonds 50; color hbonds orange;
+cartoon off;
+
+# 13) ----- turn sidechains on/off with undo/redo -----
+
+restrict backbone;
+
+# 14) ----- alpha helices and hbonds -----
+
+select 5-14; wireframe 50; cartoon;
+hbonds calculate; hbonds 50; color hbonds cyan;
+
+# 15) ----- turn off cartoon and look at residue types -----
+
+cartoon off;
+select hydrophobic; color green;
+select polar; color red;
+
+# 16) ----- look at 3sub10 helix -----
+
+select protein; cartoon; color structure; hbonds off; wireframe off;
+select 80-85; wireframe 50;
+hbonds calculate; hbonds 50; color hbonds orange;
+
+# 17) ----- isolate the helix -----
+
+restrict 80-85; color cpk; cartoon 100;
+
+
+# 18) ----- irregular secondary structure -----
+
+select protein; backbone only; backbone 80; hbonds off;
+select not sheet and not helix;
+calculate hbonds; hbonds 40; color hbonds cyan; set hbonds backbone;
+
+# 19) ----- look at the van der Waals surface -----
+
+select all; dots;
+
+
+# FE1 human insulin
+
+# 1) ----- structure cartoon -----
+
+#set pdbAddHydrogens;
+load =3I3Z;
+show info; show sequence; show structure;
+delete water;
+cartoon only;
+color structure;
+
+# 2) ----- look at the two chains and the disulphide bonds -----
+
+color chain;
+ssbonds 50; set ssbonds backbone; color ssbonds yellow; 
+
+# 3) ----- look at hydrogen bonds -----
+
+calculate hbonds; hbonds 50; color hbonds red;
+
+# END of exercise 2

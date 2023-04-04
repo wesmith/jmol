@@ -1,0 +1,136 @@
+# cohlberg_03.txt, WESmith 04/03/23
+
+# It is necessary to cut/paste each section of interest into the jmol console
+# to show the progression of the analysis. The commands 'pause', 'resume', 'prompt'
+# don't seem to properly control the flow and show the intermediate analyses. Jmol
+# appears to hijack the CPU with 'pause'.
+
+# 1) ----- SET UP for 2LYZ lysozyme: show cartoon; cut/paste to 2) ---------------------
+
+# if showing hydrogens is desired, set pdbAddHydrogens before loading the object
+
+#set pdbAddHydrogens;
+load =2LYZ;
+show info; show sequence; show structure;
+delete water;
+cartoon only;
+color structure;
+
+# 2) ----- secondary structure -----
+
+#    blue       = hydrogen-bonded turn (label T)
+#    purple     = 3_10  helix (G): 3 residues per H bond: tighter
+#    magenta    = alpha helix (H): 4 residues per H bond
+#    darkviolet = pi    helix (I): 5 residues per H bond: looser
+#    yellow     = extended strand in a beta sheet (E)
+#    white      = not classified
+
+calculate structure;
+cartoon; color structure;
+
+# 3) ----- examine hydrogen-bonded turns -----
+
+# two beta hairpins are shown:
+# - a beta hairpin = two antiparallel beta strands connected by a small H-bonded turn
+# - the central beta strand is common to the two beta hairpins
+
+restrict 42-60;
+calculate hbonds; set hbonds backbone; hbonds 40; color hbonds orange;
+
+# 4) ----- now look at 3EE4: it has pi helices -----
+
+#set pdbAddHydrogens;
+load =3EE4;
+show info; show sequence; show structure;
+delete water;
+calculate structure;
+cartoon only; color structure;
+
+# 5) ----- examine pi helix: 5 residues between H-bonds -----
+
+# residue 159 is the bridge between the alpha and the pi helices: it belongs to both
+
+select protein;
+restrict 155-168;
+calculate hbonds; set hbonds sidechain; hbonds 40; color hbonds orange;
+wireframe on; wireframe 50; color cpk; 
+cartoon on; cartoon 100; color cartoon darkviolet;
+select 159; color yellow;
+
+
+# FE1 examples of pi helices
+
+
+# FE1.1A) ----- 3GS6 one pi helix -----
+
+#set pdbAddHydrogens;
+load =3GS6;
+show info; show sequence; show structure;
+delete water;
+calculate structure;
+cartoon only; color structure;
+
+# FE1.1B) ----- isolate the pi helices -----
+
+select protein;
+restrict 223-232;
+calculate hbonds; set hbonds sidechain; hbonds 40; color hbonds orange;
+wireframe on; wireframe 50; color cpk; 
+cartoon on; cartoon 100; color cartoon darkviolet;
+set picking center;
+# click on the desired atom to be the center of rotation
+
+
+# FE1.2A) ----- 3FAY one pi helix ------
+
+#set pdbAddHydrogens;
+load =3FAY;
+show info; show sequence; show structure;
+delete water;
+calculate structure;
+cartoon only; color structure;
+
+# FE1.2B) ----- isolate the pi in context with its surrounding alpha helices -----
+
+# this section took a few minutes to figure out to get the desired (by me) result:
+# this particular outcome is not required for the exercise
+
+# isolate only the pi helix backbone with its h-bonds, in its neighborhood context, maintaining colors
+
+# NOTE adding hydrogens gives a few different H bonds than with no hydrogens
+#set pdbAddHydrogens;
+load =3FAY;
+calculate structure;
+
+# first calculate hbonds just for the pi helix: use 'restrict', not 'select'
+restrict 1189-1196;
+calculate hbonds; set hbonds sidechain; hbonds 40; color hbonds orange;
+
+# visualize only the atoms of the pi helix's backbone (1189-1196 are still restricted)
+# ie, don't visualize the atoms of the residues, CPK color atoms later
+spacefill 100; wireframe 50; restrict backbone;
+
+# restrict to the neighboring residues for the cartoon display
+restrict 1175-1205;
+cartoon 100; color structure;
+
+# color the atoms of the pi helix backbone: use 'select', not 'restrict'
+select 1189-1196; color cpk;
+
+# what follows resets the cartoon color for the pi cartoon helix,
+# without affecting the color of the atoms of the pi helix
+# (sometimes cartoon coloring colors the atoms too, need to figure out the rules)
+color cartoon structure;
+
+# click on the desired atom to be the center of rotation
+set picking center;
+
+
+FE1.3A  protein 3H9V TBD
+
+FE1.3B  TBD
+
+
+FE2.1A  protein 1HRK TBD
+
+FE2.1B  TBD

@@ -70,7 +70,7 @@ delete water;
 calculate structure;
 cartoon only; color structure;
 
-# FE1.1B) ----- isolate the pi helices -----
+# FE1.1B) ----- isolate the pi helix -----
 
 select protein;
 restrict 223-232;
@@ -81,7 +81,7 @@ set picking center;
 # click on the desired atom to be the center of rotation
 
 
-# FE1.2A) ----- 3FAY one pi helix ------
+# FE1.2A) ----- 3FAY a pi helix within an alpha helix ------
 
 #set pdbAddHydrogens;
 load =3FAY;
@@ -90,16 +90,19 @@ delete water;
 calculate structure;
 cartoon only; color structure;
 
-# FE1.2B) ----- isolate the pi in context with its surrounding alpha helices -----
+
+# FE1.2B) ----- 3FAY a pi helix within an alpha helix -----
 
 # this section took a few minutes to figure out to get the desired (by me) result:
 # this particular outcome is not required for the exercise
 
 # isolate only the pi helix backbone with its h-bonds, in its neighborhood context, maintaining colors
 
-# NOTE adding hydrogens gives a few different H bonds than with no hydrogens
+# NOTE adding hydrogens gives a few different H bonds than with no hydrogens: which are correct?
 #set pdbAddHydrogens;
+
 load =3FAY;
+delete water;
 calculate structure;
 
 # first calculate hbonds just for the pi helix: use 'restrict', not 'select'
@@ -107,7 +110,7 @@ restrict 1189-1196;
 calculate hbonds; set hbonds sidechain; hbonds 40; color hbonds orange;
 
 # visualize only the atoms of the pi helix's backbone (1189-1196 are still restricted)
-# ie, don't visualize the atoms of the residues, CPK color atoms later
+# ie, don't visualize the atoms of the residues, apply CPK color atoms later
 spacefill 100; wireframe 50; restrict backbone;
 
 # restrict to the neighboring residues for the cartoon display
@@ -120,17 +123,79 @@ select 1189-1196; color cpk;
 # what follows resets the cartoon color for the pi cartoon helix,
 # without affecting the color of the atoms of the pi helix
 # (sometimes cartoon coloring colors the atoms too, need to figure out the rules)
+# note that the neighboring residues are still restricted, so their cartoon will be colored
 color cartoon structure;
 
 # click on the desired atom to be the center of rotation
 set picking center;
 
 
-FE1.3A  protein 3H9V TBD
+FE1.3A ----- 3H9V pi helix at one end of an alpha helix -----
 
-FE1.3B  TBD
+#set pdbAddHydrogens;
+load =3H9V;
+show info; show sequence; show structure;
+delete water;
+calculate structure;
+cartoon only; color structure;
+
+FE1.3B  ----- isolate the pi helix in context -----
+
+# this works, using 'restrict'
+load =3H9V; delete water; calculate structure;
+restrict 44-51;
+calculate hbonds; set hbonds sidechain; hbonds 40; color hbonds orange;
+spacefill 100; wireframe 50; restrict backbone;
+restrict 32-56; cartoon 100; color structure
+select 44-51; color cpk;
+color cartoon structure;
+set picking center;
+
+# use to turn selection halos on/off, can be useful in troubleshooting
+selectionHalos on;
+selectionHalos off;
+
+# another way to do it, using 'select' and 'display' instead of 'restrict'
+# 'display' is more flexible than 'restrict' (legacy), according to the documentation
+load =3H9V; delete water; calculate structure;
+select 32-56; cartoon only; cartoon 100; color structure;
+select 44-51 and backbone; spacefill 100; wireframe 50; color cpk;
+calculate hbonds; set hbonds sidechain; hbonds 40; color hbonds orange;
+color cartoon structure;
+display 32-56;
+set picking center;
 
 
-FE2.1A  protein 1HRK TBD
+FE2.1A ----- 1HRK a long pi helix, protein with two chains -----
 
-FE2.1B  TBD
+#set pdbAddHydrogens;
+load =1HRK;
+delete water;
+cartoon only; color chain;
+
+FE2.1B  ----- look at structure chain A or chain B or both -----
+
+load =1HRK;
+show info; show sequence; show structure;
+delete water;
+calculate structure;
+cartoon only; color structure;
+# comment both out to see both chains
+#display :A
+# or
+#display :B
+
+FE2.1C ----- isolate pi helix in context -----
+
+load =1HRK; delete water; calculate structure;
+select 340-364; cartoon only; cartoon 100; color structure;
+select 343-356 and backbone; spacefill 100; wireframe 50; color cpk;
+calculate hbonds; set hbonds sidechain; hbonds 40; color hbonds orange;
+color cartoon structure;
+#display :A and 340-364;
+# or
+display :B and 340-364;
+set picking center;
+
+
+# END of Exercise 3

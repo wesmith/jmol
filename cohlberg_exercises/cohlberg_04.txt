@@ -1,0 +1,83 @@
+# cohlberg_04.txt, WESmith 04/06/23
+
+# helper aid: secondary-structure key:
+#    blue       = hydrogen-bonded turn (label T)
+#    purple     = 3_10  helix (G): 3 residues per H bond: tighter
+#    magenta    = alpha helix (H): 4 residues per H bond
+#    darkviolet = pi    helix (I): 5 residues per H bond: looser
+#    yellow     = extended strand in a beta sheet (E)
+#    white      = not classified
+
+# It is necessary to cut/paste each section of interest into the jmol console
+# to show the progression of the analysis. The commands 'pause', 'resume', 'prompt'
+# don't seem to properly control the flow and show the intermediate analyses. Jmol
+# appears to hijack the CPU with 'pause'.
+
+# 1) ----- overview for 1YME ------------
+
+# if showing hydrogens is desired, set pdbAddHydrogens before loading the object
+
+#set pdbAddHydrogens;
+load =1YME;
+show info; show sequence; show structure;
+delete water;
+cartoon only;
+color structure;
+
+# 2) ----- isolate the beta sheet -----
+
+display sheet;
+calculate hbonds; hbonds 40; color hbonds orange; set hbonds backbone;
+
+# 3) ----- show the beta hairpins: two ANTIPARALLEL beta strands connected by a small turn  -----
+
+# find 'T' turn between 'E' strands in the 'calculate structure' output, and display
+
+load =1YME; delete water;
+calculate structure;
+cartoon only; color structure; 
+display 33-52  # the only E-T-E showing in the structure output: just 1 beta haripin
+calculate hbonds; hbonds 40; color hbonds orange; set hbonds backbone; 
+set picking center;
+
+# 4) ----- show the beta-alpha-beta units: PARALLEL strands -----
+
+# find 'E-(T and/or G and/or H and/or I)-E sequences (but verify that the strands are parallel after displaying)
+# the two are E-THTH-E (61-108) and E-TH-E (201-242) and 
+
+load =1YME; delete water;
+calculate structure;
+cartoon only; color structure; 
+display 61-108, 201-242
+calculate hbonds; hbonds 40; color hbonds orange; set hbonds backbone; 
+
+# 5) ----- alpha-alpha motif (or hairpin) -----
+
+load =1YME; delete water;
+calculate structure;
+cartoon only; color structure; 
+display 73-102  # H-T-H
+calculate hbonds; hbonds 40; color hbonds orange; set hbonds backbone;
+
+# 6) ----- van der Waals interactions between a helix (cyan) and three other helices -----
+
+load =1YME; delete water;
+calculate structure;
+cartoon only; color structure;
+display 73-89, 94-102, 216-231, 286-305;
+calculate hbonds; hbonds 40; color hbonds orange; set hbonds backbone;
+select 286-305; color cyan;
+set picking center;
+
+# 7) ----- spacefill version of # 6) -----
+
+load =1YME; delete water;
+calculate structure;
+spacefill; color structure;
+display 73-89, 94-102, 216-231, 286-305;
+calculate hbonds; hbonds 40; color hbonds orange; set hbonds backbone;
+select 286-305; color cyan;
+set picking center;
+
+
+exer 4 unfinished

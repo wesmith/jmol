@@ -43,7 +43,7 @@ set picking center;
 # 4) ----- show the beta-alpha-beta units: PARALLEL strands -----
 
 # find 'E-(T and/or G and/or H and/or I)-E sequences (but verify that the strands are parallel after displaying)
-# the two are E-THTH-E (61-108) and E-TH-E (201-242) and 
+# the two are E-THTH-E (61-108) and E-TH-E (201-242)
 
 load =1YME; delete water;
 calculate structure;
@@ -80,4 +80,53 @@ select 286-305; color cyan;
 set picking center;
 
 
-exer 4 unfinished
+# 8) ----- beta barrel of 1KT7 retinol-binding protein -----
+
+load =1KT7; delete water; # this includes a RETINOL molecule 'RTL'
+show info; show sequence; show structure;
+calculate structure;
+cartoon only; color structure;
+
+# 9) ----- color by group to see sequence order -----
+
+color group;
+
+# 10) ----- isolate barrel and show retinol molecule and H bonds -----
+
+load =1KT7; delete water;
+show info; show sequence; show structure;
+select RTL; color cpk;
+select sheet; color group;
+display sheet or RTL
+cartoon only;
+calculate hbonds; hbonds 40; color hbonds orange; set hbonds backbone;
+
+# 11) ----- isolate beta hairpins (7 of them: from the PDBSum database) -----
+
+# PDBSum dbase is at www.ebi.ac.uk/pdbsum/
+
+load =1KT7; delete water;
+calculate structure;
+display 22-47 or 39-62 or 53-79 or 68-92 or 85-109 or 100-123 or 114-138
+cartoon only; color structure;
+calculate hbonds; hbonds 40; color hbonds orange; set hbonds backbone;
+
+# 12) ----- show barrel in spacefill -----
+
+load =1KT7; delete water;
+display sheet; spacefill;
+color group;
+
+
+# 13) ---- triose phosphate isomerase 1YPI -----
+
+load =1YPI; delete water;
+cartoon only; color chain
+
+# 14) ----- restrict to chain A -----
+
+display :A;
+color group;
+set picking center;
+
+... to be continued
